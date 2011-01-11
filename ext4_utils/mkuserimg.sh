@@ -47,7 +47,7 @@ if [ -z $SIZE ]; then
     SIZE=128M
 fi
 
-MAKE_EXT4FS_CMD="make_ext4fs $ENABLE_SPARSE_IMAGE -l $SIZE -a $MOUNT_POINT $OUTPUT_FILE $SRC_DIR"
+MAKE_EXT4FS_CMD="make_ext4fs -l $SIZE -a $MOUNT_POINT $OUTPUT_FILE $SRC_DIR"
 echo $MAKE_EXT4FS_CMD
 $MAKE_EXT4FS_CMD
 if [ $? -ne 0 ]; then
