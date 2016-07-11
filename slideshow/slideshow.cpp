@@ -21,6 +21,7 @@
 #include <linux/input.h>
 #include <cutils/klog.h>
 #include <utils/SystemClock.h>
+#include <sys/reboot.h>
 #include "minui/minui.h"
 
 #define NEXT_TIMEOUT_MS 5000
@@ -57,7 +58,6 @@ static void draw(const char *resname)
 {
     GRSurface* surface;
     int w, h, x, y;
-
     if (res_create_display_surface(resname, &surface) < 0) {
         LOGE("failed to create surface for %s\n", resname);
         return;
@@ -67,7 +67,8 @@ static void draw(const char *resname)
     h = gr_get_height(surface);
     x = (gr_fb_width() - w) / 2;
     y = (gr_fb_height() - h) / 2;
-
+    x = x < 0 ? 0 : x;
+    y = y < 0 ? 0 : y;
     gr_blit(surface, 0, 0, w, h, x, y);
     gr_flip();
 
@@ -124,11 +125,13 @@ int main(int argc, char **argv)
         do {
             if (ev_wait(timeout_remaining) == 0) {
                 ev_dispatch();
+	    }
 
-                if (key_code != -1) {
-                    input = true;
-                    break;
-                }
+            if (key_code != KEY_POWER) {
+                input = true;
+		break;
+            } else {
+                reboot(RB_POWER_OFF);
             }
             timeout_remaining -= android::uptimeMillis() - start;
         } while (timeout_remaining > 0);
