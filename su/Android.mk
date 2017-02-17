@@ -1,13 +1,16 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_CFLAGS := -std=c11 -Wall -Werror
+LOCAL_MODULE := su
+LOCAL_MODULE_TAGS := optional
+LOCAL_WHOLE_STATIC_LIBRARIES := libcutils libutils libbinder liblog
+LOCAL_SRC_FILES := su.c daemon.c pts.c
+LOCAL_CFLAGS += -Werror
 
-LOCAL_SRC_FILES:= su.c
-
-LOCAL_MODULE:= su
+ifeq ($(BOARD_SU_ALLOW_ALL),true)
+LOCAL_CFLAGS += -DSU_ALLOW_ALL
+endif
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_OPTIONAL_EXECUTABLES)
-LOCAL_MODULE_TAGS := debug
 
 include $(BUILD_EXECUTABLE)
