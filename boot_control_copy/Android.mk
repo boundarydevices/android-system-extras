@@ -1,7 +1,6 @@
 # Copyright 2015 The Android Open Source Project
 
 LOCAL_PATH := $(call my-dir)
-ifneq ($(SKIP_BOOTCTRL_COPY),true)
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := boot_control_copy.c bootinfo.c
@@ -13,4 +12,3 @@ LOCAL_STATIC_LIBRARIES := libfs_mgr
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE:= bootctrl.default
 include $(BUILD_SHARED_LIBRARY)
-endif
